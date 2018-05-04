@@ -1,5 +1,5 @@
-const GAME_WIDTH = 960
-const GAME_HEIGHT = 540
+let GAME_WIDTH
+let GAME_HEIGHT
 // Base class for any object in the game
 function GameObject(ctx, x, y) {
 	this.x = x
@@ -13,6 +13,7 @@ function Brick (ctx, x, y, width, height) {
 	this.width = width ? width : 100
 	this.height = height ? height : 100
 	this.isCollided = false
+	this.isMarked = false
 	 
 	this.draw()
 }
@@ -27,13 +28,19 @@ function Brick (ctx, x, y, width, height) {
 			this.width,
 			this.height
 		)
-		if (this.isCollided == true) {
+		if (this.isMarked == true) {
 			this._ctx.fillStyle = "#990000"
 		} else {
 			this._ctx.fillStyle = "#009900"
 		}
 		this._ctx.fill()
 		this._ctx.closePath()
+	}
+
+	this.mark = function() {
+		if (this.isCollided) {
+			this.isMarked = true
+		}
 	}
 }).call(Brick.prototype)
 
@@ -45,7 +52,7 @@ function Player(ctx, new_x, new_y) {
 	this._image = new Image()
 	this._image.src = 'player.png'
 
-	this.height = 100
+	this.height = 50
 	this.width = this.height / 1.4
 	this.direction = 'none'
 	this.state = 'idle'	
@@ -64,6 +71,19 @@ function Player(ctx, new_x, new_y) {
 	}
 	// Draw player
 	this._draw = function() {
+		/*
+		this._ctx.beginPath()
+		this._ctx.rect(
+			this.x,
+			this.y,
+			this.width,
+			this.height
+		)
+		this._ctx.fillStyle = "#000099"
+		
+		this._ctx.fill()
+		this._ctx.closePath()
+		*/
 		let sx = 0, sy = 0
 
 		if (this.direction == 'left') sy = 410
@@ -97,14 +117,14 @@ function Player(ctx, new_x, new_y) {
 			} else if (this.direction == 'up' && this.y >= 0 && !collision.up) {
 				this.y -= this._speed
 				// Perspective simulation
-				this._speed -= .1
-				this.height -= .75
+				//this._speed -= .1
+				//this.height -= .75
 				this.width = this.height / 1.4
 			} else if (this.direction == 'down' && this.y <= GAME_HEIGHT - this.height && !collision.down) {
 				this.y += this._speed
 				// Perspective simulation
-				this._speed += .1
-				this.height += .75
+				//this._speed += .1
+				//this.height += .75
 				this.width = this.height / 1.4
 			}
 		}
@@ -122,24 +142,24 @@ function detectCollision(objA, objB) {
 		down: false
 	}
 
-	if (!(objA.y < objB.y && objA.y + objA.height < objB.y) &&
-		!(objA.y > objB.y + objB.height && objA.y + objA.height > objB.y + objB.height)) {
-		if (objA.x <= objB.x + objB.width && objA.x > objB.x && objA) {
+	if (!(objA.y - objA._speed < objB.y && objA.y + objA.height - objA._speed < objB.y) &&
+		!(objA.y + objA._speed > objB.y + objB.height && objA.y + objA._speed + objA.height > objB.y + objB.height)) {
+		if (objA.x - objA._speed < objB.x + objB.width && objA.x + objA._speed > objB.x && objA) {
 			collision.left = true
 		}
 
-		if (objA.x + objA.width >= objB.x && objA.x < objB.x) {
+		if (objA.x + objA.width + objA._speed > objB.x && objA.x - objA._speed < objB.x) {
 			collision.right = true
 		}
 	}
 
-	if (!(objA.x < objB.x && objA.x + objA.width < objB.x) &&
-		!(objA.x > objB.x + objB.width && objA.x + objA.width > objB.x + objB.width)) {
-		if (objA.y <= objB.y + objB.height && objA.y > objB.y) {
+	if (!(objA.x - objA._speed < objB.x && objA.x + objA.width - objA._speed < objB.x) &&
+		!(objA.x + objA._speed > objB.x + objB.width && objA.x + objA.width + objA._speed > objB.x + objB.width)) {
+		if (objA.y - objA._speed < objB.y + objB.height && objA.y + objA._speed > objB.y) {
 			collision.up = true
 		}
 
-		if (objA.height + objA.y >= objB.y && objA.y < objB.y) {
+		if (objA.height + objA.y + objA._speed > objB.y && objA.y - objA._speed < objB.y) {
 			collision.down = true
 		}
 	}
@@ -150,11 +170,30 @@ function detectCollision(objA, objB) {
 window.onload = _ => {
 	const canvas = document.getElementById("myCanvas")
 	const ctx = canvas.getContext("2d")
+	GAME_WIDTH = canvas.width
+	GAME_HEIGHT = canvas.height
 
 	const player = new Player(ctx, canvas.width / 2, canvas.height / 2)
-	const brick1 = new Brick(ctx, 200, 200, 200, 50)
-	const brick2 = new Brick(ctx, 700, 400, 50, 50)
-	let objects = [brick1, brick2]
+
+	let objects = []
+	let x
+	let y
+	let width
+	let height
+
+	for (let i = 40; i >= 0; i--) {
+		x = Math.random() * (GAME_WIDTH)
+		y = Math.random() * (GAME_HEIGHT)
+		width = Math.random() * 200
+		height = Math.random() * 200
+		objects.push(new Brick(ctx, x, y, width, height))
+	}
+	/*
+	let objects = [new Brick(ctx, 195, 200, 200, 50),
+				   new Brick(ctx, 693, 400, 50, 50),
+				   new Brick(ctx, 693, 400, 50, 50)
+	]
+	*/
 
 	document.addEventListener("keydown", e => {
 		if(e.keyCode == 37) {
@@ -169,6 +208,13 @@ window.onload = _ => {
 	    } else if (e.keyCode == 40) {
 	    	player.direction = 'down'
 	    	player.state = 'walk'
+	    } else if (e.keyCode == 32) {
+	    	for (var i = objects.length - 1; i >= 0; i--) {
+	    		if (objects[i].isMarked && objects[i].isCollided) {
+	    			objects.splice(i, 1)
+	    		}
+	    		objects[i].mark()
+	    	}
 	    }
 	})
 
@@ -203,8 +249,11 @@ window.onload = _ => {
 			finalCollision.down = (finalCollision.down + collision.down) ? true : false
 		}
 
-		brick1.draw()
-		brick2.draw()
+		//objects[0].draw()
+		//objects[1].draw()
+		for (let i = objects.length - 1; i >= 0; i--) {
+			objects[i].draw()
+		}
 		player.move(finalCollision)
 		requestAnimationFrame(update)
 	})()
