@@ -197,6 +197,24 @@ window.onload = _ => {
 		objects.push(new Brick(ctx, x, y, width, height))
 	}
 
+	let mouseDownEvent = new Event("keydown")
+	let mouseUpEvent = new Event("keyup")
+	let buttons = document.getElementsByClassName("button")
+
+	Array.prototype.forEach.call(buttons, function(button) {
+	    button.addEventListener("mousedown", _ => {
+	    	console.log(button.getAttribute("value"))
+			mouseDownEvent.keyCode = button.getAttribute("value")
+			document.dispatchEvent(mouseDownEvent)
+		})
+
+		button.addEventListener("mouseup", _ => {
+	    	console.log(button.getAttribute("value"))
+			mouseUpEvent.keyCode = button.getAttribute("value")
+			document.dispatchEvent(mouseUpEvent)
+		})
+	})
+
 	document.addEventListener("keydown", e => {
 		if(e.keyCode == 37) {
 	        player.direction = 'left'
