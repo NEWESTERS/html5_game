@@ -1,0 +1,48 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+canvas {
+	background: #eee;
+	display: block;
+	margin: 0 auto;
+}
+
+#gamepad {
+	margin: auto;
+	width: 400px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.button	{
+	margin: 3px;
+	width: 50px;
+	text-align: center;
+	padding: 5px;
+	background-color: #227722;
+	color: #FFFFFF;
+}
+
+#arrows {
+	display: flex;
+	flex-direction: column;
+}
+
+.arrow-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+#actions {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+
+
+
