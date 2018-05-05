@@ -202,14 +202,22 @@ window.onload = _ => {
 	let buttons = document.getElementsByClassName("button")
 
 	Array.prototype.forEach.call(buttons, function(button) {
-	    button.addEventListener("mousedown", _ => {
-	    	console.log(button.getAttribute("value"))
+	    button.addEventListener("touchstart", _ => {
 			mouseDownEvent.keyCode = button.getAttribute("value")
 			document.dispatchEvent(mouseDownEvent)
 		})
 
+		button.addEventListener("mousedown", _ => {
+			mouseDownEvent.keyCode = button.getAttribute("value")
+			document.dispatchEvent(mouseDownEvent)
+		})
+
+		button.addEventListener("touchend", _ => {
+			mouseUpEvent.keyCode = button.getAttribute("value")
+			document.dispatchEvent(mouseUpEvent)
+		})
+
 		button.addEventListener("mouseup", _ => {
-	    	console.log(button.getAttribute("value"))
 			mouseUpEvent.keyCode = button.getAttribute("value")
 			document.dispatchEvent(mouseUpEvent)
 		})
