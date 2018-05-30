@@ -49,6 +49,55 @@ canvas {
 	justify-content: space-around;
 }
 
+#modal {
+	width: 300px;
+	height: 0;
+	top: 50%;
+	margin-top: -250px;
+	left: 50%;
+	margin-left: -150px;
+	text-align: center;
+	position: fixed;
+	background-color: #FEFEFE;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+	transition: 1s;
+}
+
+#modal.open {
+	height: 500px !important;
+}
+
+#modal>.modal-header {
+	margin: 10px auto 10px auto;
+	transform: translateX(-50px);
+	width: 200px;
+	transition: all .5s;
+	opacity: 0;
+}
+
+#modal.open>.modal-header {
+	transform: translateX(0);
+	opacity: 1;
+	margin: 10px auto 10px auto;
+}
+
+#modal>.close-btn {
+	margin-left: 265px;
+	margin-top: 5px;
+	width: 30px;
+	height: 30px;
+	border-radius: 30px;
+	background-color: #EEE;
+	transition: all .5s;
+	opacity: 0;
+}
+
+#modal.open>.close-btn {
+	opacity: 1;
+}
+
+
 
 
 

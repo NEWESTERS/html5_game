@@ -4,33 +4,41 @@
     <meta charset="utf-8" />
     <title>RPG</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="playerClass.js"></script>
+    <script type="text/javascript" src="brickClass.js"></script>
+    <script type="text/javascript" src="modalClass.js"></script>
+    <script type="text/javascript" src="gameClass.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 </head>
 <body>
-
-<canvas id="myCanvas" width="1200" height="600"></canvas>
-<div id="gamepad">
-	<div id="arrows">
-		<div class="arrow-row">
-			<div class="arrow button" id="up" value="38">Up</div>
-		</div>
-
-		<div class="arrow-row">
-			<div class="arrow button" id="left" value="37">Left</div>
-			<div class="arrow button" id="right" value="39">Right</div>
-		</div>
-		
-		<div class="arrow-row">
-			<div class="arrow button" id="down" value="40">Down</div>
-		</div>
+	<div id="modal">
+		<div class="close-btn">X</div>
+		<h1 class="modal-header"></h1>
 	</div>
 
-	<div id="actions">
-		<div class="action button" id="select" value="32">Select</div>
+	<canvas id="myCanvas" width="1200" height="600"></canvas>
+	<div id="gamepad">
+		<div id="arrows">
+			<div class="arrow-row">
+				<div class="arrow button" id="up" value="38">Up</div>
+			</div>
 
-		<div class="action button" id="destroy" value="13">Destroy</div>
+			<div class="arrow-row">
+				<div class="arrow button" id="left" value="37">Left</div>
+				<div class="arrow button" id="right" value="39">Right</div>
+			</div>
+			
+			<div class="arrow-row">
+				<div class="arrow button" id="down" value="40">Down</div>
+			</div>
+		</div>
+
+		<div id="actions">
+			<div class="action button" id="select" value="32">Select</div>
+
+			<div class="action button" id="destroy" value="13">Destroy</div>
+		</div>
 	</div>
-</div>
 
 </body>
 </html>
