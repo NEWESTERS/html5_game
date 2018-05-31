@@ -1,35 +1,70 @@
 * {
 	padding: 0;
 	margin: 0;
+	font-family: Arial;
+}
+
+body {
+	background-color: #555;
 }
 
 canvas {
-	background: #eee;
+	box-shadow: 0 0 20px rgba(0, 0, 0, .25);
+	background: #FFF;
 	display: block;
-	margin: 0 auto;
+	margin: 10px auto;
+	border-radius: 50px;
 }
 
 #gamepad {
-	margin: auto;
-	width: 400px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, .25);
+	margin: 10px auto 10px auto;
+	padding: 10px;
+	/*background-color: #EEE;*/
+	background: linear-gradient(to bottom, #EEE 0%, #CCC 100%);
+	border-radius: 50px;
+	width: 350px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
 }
 
 .button	{
+	box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+	transition: box-shadow .5s;
+	border-radius: 30px;
 	margin: 3px;
-	width: 50px;
+	width: 60px;
 	text-align: center;
-	padding: 5px;
-	background-color: #227722;
-	color: #FFFFFF;
+	padding: 7px;
+	background: linear-gradient(to bottom, #555 0%, #333 100%);
+	/*background-color: #333;*/
+	color: #FFF;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.button:hover {
+	box-shadow: 0 0 15px rgba(0, 0, 0, .5);
+}
+
+.button.pressed {
+	background: linear-gradient(to bottom, #05F 0%, #03D 100%) !important;
+}
+
+#fireball.button {
+	background: linear-gradient(to bottom, #F50 0%, #D30 100%);
+	/*background-color: #F50;*/
+	color: #FFF;
+}
+
+#inspect.button {
+	background: linear-gradient(to bottom, #5F0 0%, #3D0 100%);
+	/*background-color: #5F0;*/
 }
 
 #arrows {
@@ -58,17 +93,19 @@ canvas {
 	margin-left: -150px;
 	text-align: center;
 	position: fixed;
-	background-color: #FEFEFE;
-	border-radius: 10px;
+	/*background-color: #EEE;*/
+	background: linear-gradient(to bottom, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+	border-radius: 50px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, .4);
 	transition: 1s;
 }
 
 #modal.open {
-	height: 500px !important;
+	height: 250px !important;
 }
 
-#modal>.modal-header {
+#modal>.modal-content {
+	color: #FFF;
 	margin: 10px auto 10px auto;
 	transform: translateX(-50px);
 	width: 200px;
@@ -76,21 +113,32 @@ canvas {
 	opacity: 0;
 }
 
-#modal.open>.modal-header {
+#modal>.modal-info {
+	transition-delay: .1s;
+}
+
+#modal.open>.modal-content {
 	transform: translateX(0);
 	opacity: 1;
 	margin: 10px auto 10px auto;
 }
 
 #modal>.close-btn {
-	margin-left: 265px;
-	margin-top: 5px;
+	margin-left: 255px;
+	margin-top: 15px;
 	width: 30px;
 	height: 30px;
 	border-radius: 30px;
 	background-color: #EEE;
 	transition: all .5s;
 	opacity: 0;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
 }
 
 #modal.open>.close-btn {

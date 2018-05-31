@@ -11,10 +11,10 @@ function Game(canvas) {
 
 	this.start = function() {
 		let x, y, width, height
-		let min = 10,
+		const min = 100,
 			max = 200
 
-		for (let i = 15; i >= 0; i--) {
+		for (let i = 6; i >= 0; i--) {
 			x = Math.random() * (GAME_WIDTH)
 			y = Math.random() * (GAME_HEIGHT)
 			width = Math.random() * (max - min) + min
@@ -70,12 +70,24 @@ function Game(canvas) {
 		    		}
 		    	}		    	
 		    }
+
+		    Array.prototype.forEach.call(buttons, function(button) {
+		    	if (button.getAttribute("value") == e.keyCode) {
+		    		button.classList.add('pressed')
+		    	}
+		    })
 		})
 
 		document.addEventListener("keyup", e => {
 			if (e.keyCode >= 37 && e.keyCode <= 40) {
 				player.state = 'idle'
 			}
+
+			Array.prototype.forEach.call(buttons, function(button) {
+		    	if (button.getAttribute("value") == e.keyCode) {
+		    		button.classList.remove('pressed')
+		    	}
+		    })
 		})
 
 		this.update()
@@ -127,4 +139,45 @@ function Game(canvas) {
 		
 		player.move(this.findCollisions())
 	}
+}
+
+// Base class for any object in the game
+function GameObject(ctx, x, y) {
+	this.x = x
+	this.y = y
+	this.ctx = ctx
+}
+
+function detectCollision(objA, objB) {
+	// Collision directions for objA
+	let collision = {
+		left: false,
+		up: false,
+		right: false,
+		down: false
+	}
+
+	if (!(objA.y - objA.speed < objB.y && objA.y + objA.height - objA.speed < objB.y) &&
+		!(objA.y + objA.speed > objB.y + objB.height && objA.y + objA.speed + objA.height > objB.y + objB.height)) {
+		if (objA.x - objA.speed < objB.x + objB.width && objA.x + objA.speed > objB.x && objA) {
+			collision.left = true
+		}
+
+		if (objA.x + objA.width + objA.speed > objB.x && objA.x - objA.speed < objB.x) {
+			collision.right = true
+		}
+	}
+
+	if (!(objA.x - objA.speed < objB.x && objA.x + objA.width - objA.speed < objB.x) &&
+		!(objA.x + objA.speed > objB.x + objB.width && objA.x + objA.width + objA.speed > objB.x + objB.width)) {
+		if (objA.y - objA.speed < objB.y + objB.height && objA.y + objA.speed > objB.y) {
+			collision.up = true
+		}
+
+		if (objA.height + objA.y + objA.speed > objB.y && objA.y - objA.speed < objB.y) {
+			collision.down = true
+		}
+	}
+
+	return collision
 }

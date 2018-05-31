@@ -1,36 +1,36 @@
 function Player(ctx, x, y) {
 	GameObject.apply(this, arguments)
 	// Player fields
-	this.speed = 7
-	this._frameNumber = 0
-	this._image = new Image()
-	this._image.src = 'player.png'
-	this._bullets = []
+	this.speed = 8
+	this.frameNumber = 0
+	this.image = new Image()
+	this.image.src = 'player.png'
+	this.bullets = []
 
-	this.height = 50
+	this.height = 100
 	this.width = this.height / 1.4
 	this.direction = 'down'
 	this.state = 'idle'	
 	// Init draw
-	this._draw()
+	this.draw()
 }
 // Player methods
 (function() {
 	// Next frame number for animation
-	this._nextFrame = function() {
-		if (this._frameNumber < 19) {
-			this._frameNumber ++
+	this.nextFrame = function() {
+		if (this.frameNumber < 19) {
+			this.frameNumber ++
 		} else {
-			this._frameNumber = 0
+			this.frameNumber = 0
 		}
 	}
 	// Draw player
-	this._draw = function() {
-		for (let i = this._bullets.length - 1; i >= 0; i--) {
-        	if (this._bullets[i].lifetime > 0) {
-        		this._bullets[i].move()
+	this.draw = function() {
+		for (let i = this.bullets.length - 1; i >= 0; i--) {
+        	if (this.bullets[i].lifetime > 0) {
+        		this.bullets[i].move()
         	} else {
-        		this._bullets.splice(i, 1)
+        		this.bullets.splice(i, 1)
         	}
         }
 
@@ -41,10 +41,10 @@ function Player(ctx, x, y) {
 		else if (this.direction == 'up') sy = 210
 		else if (this.direction == 'down') sy = 0
 
-		if (this.state != 'idle') sx = 135 * Math.floor(this._frameNumber / 5)
+		if (this.state != 'idle') sx = 135 * Math.floor(this.frameNumber / 5)
 
-        this._ctx.drawImage(
-        	this._image,
+        this.ctx.drawImage(
+        	this.image,
         	sx,
         	sy,
         	135,
@@ -55,7 +55,7 @@ function Player(ctx, x, y) {
         	this.height
         )
 
-        this._nextFrame()
+        this.nextFrame()
 	}
 	// Change player attributes while moving
     this.move = function(collision) {
@@ -79,13 +79,13 @@ function Player(ctx, x, y) {
 			}
 		}
 
-		this._draw()        
+		this.draw()        
 	}
 
 	this.shoot = function() {
-		this._bullets.push(
+		this.bullets.push(
 			new Bullet(
-				this._ctx,
+				this.ctx,
 				this.x + this.width / 2,
 				this.y + this.height / 2, 
 				this.direction
@@ -99,23 +99,23 @@ function Bullet(ctx, x, y, direction) {
 	this.direction = direction
 	this.lifetime = 1
 	this.speed = 15
-	this.radius = 10
+	this.radius = 20
 
-	this._draw()
+	this.draw()
 }
 // Bullet methods
 (function(){
-	this._lifetimeDecrease = function() {
+	this.lifetimeDecrease = function() {
 		this.lifetime -= 1 / 60
 	}
 	// Draw bullet
-	this._draw = function() {
-		this._ctx.beginPath()
-		this._ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
-		this._ctx.stroke()
-		this._ctx.fillStyle = "#FF8800"
-		this._ctx.fill()
-		this._ctx.closePath()
+	this.draw = function() {
+		this.ctx.beginPath()
+		this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
+		this.ctx.stroke()
+		this.ctx.fillStyle = "#FF8800"
+		this.ctx.fill()
+		this.ctx.closePath()
 	}
 	// Change bullet attributes while moving
     this.move = function() {		
@@ -129,7 +129,7 @@ function Bullet(ctx, x, y, direction) {
 			this.y += this.speed
 		}
 
-		this._lifetimeDecrease()
-		this._draw()        
+		this.lifetimeDecrease()
+		this.draw()        
 	}
 }).call(Bullet.prototype)
